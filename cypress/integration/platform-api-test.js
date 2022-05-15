@@ -155,13 +155,15 @@ describe('Lab5: CRUD operations', () => {
     });
   });
   it('retrieving deleted post, expecting error code 404', () => {
-    cy.request({
-      failOnStatusCode: false,
-      method: 'GET',
-      headers: { authorization: token },
-      url: `/api/posts/${postId}`,
-    }).then((res) => {
-      expect(res.status).to.eq(404);
+    cy.wait(2000).then(() => {
+      cy.request({
+        failOnStatusCode: false,
+        method: 'GET',
+        headers: { authorization: token },
+        url: `/api/posts/${postId}`,
+      }).then((res) => {
+        expect(res.status).to.eq(404);
+      });
     });
   });
 });
