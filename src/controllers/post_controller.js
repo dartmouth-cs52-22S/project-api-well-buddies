@@ -31,6 +31,9 @@ export async function getPosts() {
 export async function getPost(id) {
   try {
     const post = await Post.findById({ _id: id });
+    if (post == null) {
+      throw new Error('get post error');
+    }
     return post;
   } catch (error) {
     throw new Error(`get post error: ${error}`);
@@ -46,6 +49,9 @@ export async function deletePost(id) {
 }
 export async function updatePost(id, postFields) {
   const post = await Post.findOne({ _id: id });
+  if (post == null) {
+    throw new Error('get post error');
+  }
   if ('title' in postFields) {
     post.title = postFields.title;
   }
