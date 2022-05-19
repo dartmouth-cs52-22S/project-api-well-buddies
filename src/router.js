@@ -16,7 +16,12 @@ router.route('/posts')
     res.json(posts);
   })
   .get(async (req, res) => {
-    const posts = await Posts.getPosts();
+    let posts = {};
+    if ('keyword' in req.query) {
+      posts = await Posts.search(req.query.keyword);
+    } else {
+      posts = await Posts.getPosts();
+    }
     res.json(posts);
   });
 
@@ -44,7 +49,6 @@ router.route('/posts/:id')
   .delete(async (req, res) => {
     try {
       const confirmation = await Posts.deletePost(req.params.id);
-      console.log(confirmation);
       res.json(confirmation);
     } catch (error) {
       res.status(404).json({ error });

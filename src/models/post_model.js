@@ -10,6 +10,8 @@ const PostSchema = new Schema({
   toJSON: { virtuals: true },
 });
 
+PostSchema.index({ title: 'text', tags: 'text', content: 'text' });
+
 const PostModel = mongoose.model('Post', PostSchema);
 
 export default PostModel;

@@ -71,3 +71,12 @@ export async function updatePost(id, postFields) {
     throw new Error(`update post error: ${error}`);
   }
 }
+
+export async function search(query) {
+  try {
+    const searchedObjects = await Post.find({ $text: { $search: query } });
+    return searchedObjects;
+  } catch (error) {
+    throw new Error(`search post error: ${error}`);
+  }
+}
