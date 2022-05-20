@@ -1,28 +1,20 @@
-# Platform Rest API
 
-A backend for my previous platform Lab 4
+# Platform Client Lab With Authentification
 
-[frontend](https://wondrous-rugelach-49b91a.netlify.app)
-[backend](https://platform-rest-api-g74q.onrender.com)
+A lab that uses an external database, storing and fetching data through API calls. 
+
+[frontend](https://imaginative-dodol-7b5964.netlify.app)
+[backend]()
 
 ## What Worked Well
 
-- Overall, implementing the API went relatively smoothly. I didn't encounter many big errors, and Insomnia and Compass were super super useful when debugging.
+Overall, implementing sign in and sign up went very smoothly, and so did adding author to posts. 
 
 ## What Didn't
 
-- Working with the mongoose functions was sometimes not as intutitive as I assumed (specifically, it took me a while to notice that the find function used in getting a specific post returns null but does not throw an error when passed a bad id)
+One thing that I struggled with was that I initially saved by AUTH_SECRET in the incorrect format, and it took me a while to figure out that that was why I was umablne to get things to work
 
 ## Extra Credit
 
-- For extra credit, I implemented search. Users can search through titles, content, and tags
-
 ## Screenshots
 
-![](./readme-images/main-page.png)
-
-- New search feature
-
-![](./readme-images/search1.png)
-
-![](./readme-images/search2.png)
