@@ -26,8 +26,6 @@ const localLogin = new LocalStrategy(localOptions, async (email, password, done)
   let user;
   let isMatch;
 
-  console.log(`email: ${email} and password:${password}`);
-
   try {
     // goes through the database and tries to find a user with that specific email
     user = await User.findOne({ email });
@@ -36,7 +34,6 @@ const localLogin = new LocalStrategy(localOptions, async (email, password, done)
     if (!user) {
       return done(null, false);
     }
-    console.log('got here');
     // if we do find a user, then we check the password submitted with the stored
     // user's password
     isMatch = await user.comparePassword(password);
