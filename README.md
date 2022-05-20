@@ -1,7 +1,7 @@
 
-# Platform Client Lab With Authentification
+# Platform REST API Lab With Authentification
 
-A lab that uses an external database, storing and fetching data through API calls. 
+This lab creates a REST API that allows users to log in and sign up. Only authenticated users are allowed to create posts. At the bottom of each posts (once you click on a post), you can see the name of the author who first wrote it, but all authenticated users are able to edit any post. 
 
 [frontend](https://imaginative-dodol-7b5964.netlify.app)
 [backend](https://platform-rest-api-withauth.onrender.com)
