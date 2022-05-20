@@ -12,7 +12,7 @@ export async function createPost(postFields, author) {
   if ('tags' in postFields) {
     post.tags = postFields.tags;
   }
-  post.author = author;
+  post.author = author.userName;
   try {
     const savedpost = await post.save();
     return savedpost;

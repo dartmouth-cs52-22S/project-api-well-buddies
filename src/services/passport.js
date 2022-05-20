@@ -36,6 +36,7 @@ const localLogin = new LocalStrategy(localOptions, async (email, password, done)
     }
     // if we do find a user, then we check the password submitted with the stored
     // user's password
+    console.log(user);
     isMatch = await user.comparePassword(password);
     // if the password is not a match, return callback function done with false
     // showing that the user does not have that password

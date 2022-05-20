@@ -5,13 +5,15 @@ const PostSchema = new Schema({
   content: String,
   coverUrl: String,
   tags: String,
-  author: { type: Schema.Types.ObjectId, ref: 'User' },
+  author: String, // { type: Schema.Types.ObjectId, ref: 'User' },
 }, {
   toObject: { virtuals: true },
   toJSON: { virtuals: true },
 });
 
-PostSchema.index({ title: 'text', tags: 'text', content: 'text' });
+PostSchema.index({
+  title: 'text', tags: 'text', content: 'text', author: 'text',
+});
 
 const PostModel = mongoose.model('Post', PostSchema);
 

@@ -2,6 +2,7 @@ import mongoose, { Schema } from 'mongoose';
 import bcrypt from 'bcryptjs';
 
 const UserSchema = new Schema({
+  userName: { type: String },
   email: { type: String, unique: true, lowercase: true },
   password: { type: String },
 }, {
@@ -9,8 +10,6 @@ const UserSchema = new Schema({
   toJSON: { virtuals: true },
   timestamps: true,
 });
-
-const UserModel = mongoose.model('User', UserSchema);
 
 // On Save Hook, encrypt password
 // Before saving a model, run this function
@@ -38,5 +37,6 @@ UserSchema.methods.comparePassword = async function comparePassword(candidatePas
   const comparison = await bcrypt.compare(candidatePassword, this.password);
   return comparison;
 };
+const UserModel = mongoose.model('User', UserSchema);
 
 export default UserModel;
