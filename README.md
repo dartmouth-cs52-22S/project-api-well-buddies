@@ -18,3 +18,6 @@ One thing that I struggled with was that I initially saved by AUTH_SECRET in the
 
 ## Screenshots
 
+![Screen Shot 2022-05-20 at 12 53 58 PM](https://user-images.githubusercontent.com/70060547/169576514-524f334a-f253-47d1-b9b7-5e11ce4ce664.png)
+![Screen Shot 2022-05-20 at 12 54 15 PM](https://user-images.githubusercontent.com/70060547/169576518-3cb7d130-643e-44e6-946c-ad846f6ff6e0.png)
+![Screen Shot 2022-05-20 at 12 54 23 PM](https://user-images.githubusercontent.com/70060547/169576520-18a1ecc1-2058-4b6d-9c69-15ec5269e180.png)
