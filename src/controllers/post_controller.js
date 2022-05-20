@@ -1,6 +1,6 @@
 import Post from '../models/post_model';
 
-export async function createPost(postFields) {
+export async function createPost(postFields, author) {
   const post = new Post();
   console.log(postFields);
   post.title = postFields.title;
@@ -13,6 +13,7 @@ export async function createPost(postFields) {
   if ('tags' in postFields) {
     post.tags = postFields.tags;
   }
+  post.author = author;
   try {
     const savedpost = await post.save();
     return savedpost;
