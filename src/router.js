@@ -5,7 +5,7 @@ import { requireAuth, requireSignin } from './services/passport';
 const router = Router();
 
 router.get('/', (req, res) => {
-  res.json({ message: 'welcome to well buddies api' });
+  res.json({ message: 'welcome to well buddies api. this is proof that our data retrieval is working!' });
 });
 
 router.post('/signin', requireSignin, async (req, res) => {
