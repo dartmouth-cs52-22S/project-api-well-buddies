@@ -1,6 +1,6 @@
 # Well-Buddies
 
-Link to mockups: https://www.figma.com/files/project/56608073/WellBuddies?fuid=1101923148892677410
+Link to mockups: https://www.figma.com/files/project/56608073/WellBuddies?fuid=1101923148892677410 <br>
 Link to api server: https://well-buddies-api-ac5z.onrender.com
 
 ## Architecture
