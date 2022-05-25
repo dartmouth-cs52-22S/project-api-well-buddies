@@ -9,7 +9,7 @@ const UserSchema = new Schema({
   toObject: { virtuals: true },
   toJSON: { virtuals: true },
   timestamps: true,
-});
+});``
 
 // On Save Hook, encrypt password
 // Before saving a model, run this function
