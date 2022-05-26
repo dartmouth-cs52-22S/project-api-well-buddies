@@ -22,7 +22,7 @@ export async function getActivities(res, req) {
     });
 }
 
-export async function getPost(res, req) {
+export async function getActivity(res, req) {
   Activity.findById(req.params.id)
     .then((result) => {
       res.json(result);
