@@ -3,10 +3,12 @@ import mongoose, { Schema } from 'mongoose';
 const profileSchema = new Schema(
   {
     user: { type: Schema.Types.ObjectId, ref: 'User' },
-    name: String,
-    email: String,
+    name: "",
+    // email: "",
     stressful: [],
     calm: [],
+    pet: "",
+    pet_name: "",
 
   },
 

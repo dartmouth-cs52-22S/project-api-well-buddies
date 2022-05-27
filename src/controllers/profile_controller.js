@@ -4,9 +4,11 @@ export async function createProfile(data) {
   const profile = new Profile();
   profile.user = data.id;
   profile.name = data.name;
-  profile.email = data.email;
+  // profile.email = data.email;
   profile.stressful = data.stressful;
   profile.calm = data.calm;
+  profile.pet = data.pet;
+  profile.pet_name = data.pet_name;
   try {
     const savedProfile = await profile.save();
     return savedProfile;
@@ -16,7 +18,7 @@ export async function createProfile(data) {
 }
 
 export async function updateProfile(req, res) {
-  Post.findByIdAndUpdate(req.params.id, req.email, req.name)
+  Post.findByIdAndUpdate(req.params.id, req.email, req.name, req.pet, req.pet_name)
     .then((result) => {
       res.json(result);
     })
