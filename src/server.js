@@ -3,7 +3,10 @@ import cors from 'cors';
 import path from 'path';
 import morgan from 'morgan';
 import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 import apiRoutes from './router';
+
+dotenv.config({ silent: true });
 
 // initialize
 const app = express();
@@ -41,7 +44,8 @@ app.use('/api', apiRoutes);
 async function startServer() {
   try {
     // connect DB
-    const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost/api';
+    const mongoURI = process.env.MONGODB_URI; /* || 'mongodb://localhost/api'; */
+    console.log(mongoURI);
     await mongoose.connect(mongoURI);
     console.log(`Mongoose connected to: ${mongoURI}`);
 
