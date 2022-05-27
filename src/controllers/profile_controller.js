@@ -18,7 +18,7 @@ export async function createProfile(data) {
 }
 
 export async function updateProfile(req, res) {
-  Post.findByIdAndUpdate(req.params.id, req.email, req.name)
+  Post.findByIdAndUpdate(req.params.id, req.email, req.name, req.pet, req.pet_name)
     .then((result) => {
       res.json(result);
     })
