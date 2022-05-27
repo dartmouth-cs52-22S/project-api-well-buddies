@@ -1,6 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
 
-// create a PostSchema with a title field
 const activitySchema = new Schema(
   {
     title: String,
@@ -11,7 +10,6 @@ const activitySchema = new Schema(
 
 );
 
-// create PostModel class from schema
 const activityModel = mongoose.model('Activity', activitySchema);
 
 export default activityModel;
