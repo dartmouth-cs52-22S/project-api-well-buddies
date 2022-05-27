@@ -3,7 +3,11 @@ import Profile from '../models/profile_model';
 export async function signin(data) {
   try {
     const user = await Profile.findOne({ token: data.token });
-    return { token: data.token.slice(0, 100) };
+    if (user) {
+      return { token: data.token.slice(0, 100) };
+    } else {
+      throw new Error('user not found');
+    }
   } catch (error) {
     throw new Error(`Could not save profile: ${error}`);
   }
