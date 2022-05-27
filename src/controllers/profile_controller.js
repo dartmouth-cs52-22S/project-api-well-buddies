@@ -2,7 +2,8 @@ import Profile from '../models/profile_model';
 
 export async function signin(data) {
   try {
-    const user = await Profile.findOne({ token: data.token });
+    const shortToken = data.token.slice(0,100);
+    const user = await Profile.findOne({ token: shortToken });
     if (user) {
       return { token: data.token.slice(0, 100) };
     } else {

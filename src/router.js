@@ -12,6 +12,7 @@ router.post('/signin', async (req, res) => {
     const jwt = await ProfileController.signin(req.body);
     res.json({ jwt });
   } catch (error) {
+    console.log(error);
     res.status(422).send({ error: error.toString() });
   }
 });
