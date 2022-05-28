@@ -47,9 +47,9 @@ export async function signup(data) {
 
 export async function getBuddy(jwtToken) {
   try {
-    const user = jwt.decode(jwtToken, process.env.AUTH_SECRET);
-    console.log(user);
-    const foundUser = await Profile.findOne({ user });
+    const email = jwt.decode(jwtToken, process.env.AUTH_SECRET);
+    console.log(email);
+    const foundUser = await Profile.findOne({ email });
     console.log('founduser', foundUser);
     if (foundUser === null) {
       console.log('buddynotfound');
@@ -81,5 +81,5 @@ export async function setBuddy(data) {
 }
 
 function tokenForUser(user) {
-  return jwt.encode(user.user, process.env.AUTH_SECRET);
+  return jwt.encode(user.email, process.env.AUTH_SECRET);
 }
