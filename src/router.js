@@ -63,8 +63,8 @@ router.route('/emotion/:jwt').get(async (req, res) => {
   }
 }).post(async (req, res) => {
   try {
-    const buddy = await EmotionController.getEmotion(req.params.jwt, req.body);
-    res.json(buddy);
+    const emotion = await EmotionController.getEmotion(req.params.jwt, req.body);
+    res.json(emotion);
   } catch (error) {
     res.status(422).send({ error: error.toString() });
   }
