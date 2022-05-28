@@ -48,11 +48,8 @@ export async function signup(data) {
 export async function getBuddy(jwtToken) {
   try {
     const email = jwt.decode(jwtToken, process.env.AUTH_SECRET);
-    console.log(email);
     const foundUser = await Profile.findOne({ email });
-    console.log('founduser', foundUser);
     if (foundUser === null) {
-      console.log('buddynotfound');
       throw new Error('Buddy not found');
     }
     return { pet: foundUser.pet, petName: foundUser.petName };
@@ -63,18 +60,21 @@ export async function getBuddy(jwtToken) {
 
 export async function setBuddy(data) {
   try {
-    const user = await Profile.findOne({ token: data.idToken });
-    if (user === null) {
+    const email = jwt.decode(data.token, process.env.AUTH_SECRET);
+    const foundUser = await Profile.findOne({ email });
+    if (foundUser === null) {
       throw new Error('Buddy not found');
     }
     if (data.pet !== '') {
-      user.pet = data.pet;
+      foundUser.pet = data.pet;
     }
     if (data.petName !== '') {
-      user.petName = data.petName;
+      foundUser.petName = data.petName;
     }
-    // TODO: look at lab to see if check to make sure user is saved
-    return user;
+
+    const updatedUser = await foundUser.save();
+
+    return { pet: updatedUser.pet, petName: updatedUser.petName };
   } catch (error) {
     throw new Error(`Could not save profile: ${error}`);
   }
