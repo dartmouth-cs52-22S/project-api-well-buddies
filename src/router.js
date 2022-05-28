@@ -10,7 +10,7 @@ router.get('/', (req, res) => {
 router.post('/signin', async (req, res) => {
   try {
     const jwt = await ProfileController.signin(req.body);
-    res.json({ jwt });
+    res.json(jwt);
   } catch (error) {
     console.log(error);
     res.status(422).send({ error: error.toString() });
@@ -20,23 +20,22 @@ router.post('/signin', async (req, res) => {
 router.post('/signup', async (req, res) => {
   try {
     const jwt = await ProfileController.signup(req.body);
-    res.json({ jwt });
+    res.json(jwt);
   } catch (error) {
     res.status(422).send({ error: error.toString() });
   }
 });
 
-router.get('/buddy/:token', async (req, res) => {
+router.get('/buddy/:jwt', async (req, res) => {
   try {
-    console.log(req.params.token);
-    const buddy = await ProfileController.getBuddy(req.params.token);
+    const buddy = await ProfileController.getBuddy(req.params.jwt);
     res.json(buddy);
   } catch (error) {
     res.status(422).send({ error: error.toString() });
   }
-}).patch('/buddy/:token', async (req, res) => {
+}).patch('/buddy/:jwt', async (req, res) => {
   try {
-    const buddy = await ProfileController.setBuddy(req.params);
+    const buddy = await ProfileController.setBuddy(req.params.jwt);
     res.json(buddy);
   } catch (error) {
     res.status(422).send({ error: error.toString() });
