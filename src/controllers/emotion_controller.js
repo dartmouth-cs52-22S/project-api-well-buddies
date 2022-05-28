@@ -9,7 +9,7 @@ export async function getEmotion(jwtToken) {
     if (foundUser === null) {
       throw new Error('Emotion not found');
     }
-    return { title: foundUser.title, user: foundUser.user };
+    return { title: foundUser.title, user: foundUser.user, date: foundUser.date };
   } catch (error) {
     throw new Error(`Could not get emotions: ${error}`);
   }
@@ -31,12 +31,8 @@ export async function setEmotion(data) {
 
     const updatedUser = await foundUser.save();
 
-    return { title: updatedUser.title, user: updatedUser.user };
+    return { title: updatedUser.title, user: updatedUser.user, date: updatedUser.date };
   } catch (error) {
     throw new Error(`Could not set emotion: ${error}`);
   }
-}
-
-function tokenForUser(user) {
-  return jwt.encode(user.email, process.env.AUTH_SECRET);
 }
