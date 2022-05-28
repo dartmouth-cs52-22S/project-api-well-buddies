@@ -36,3 +36,13 @@ export async function setEmotion(data) {
     throw new Error(`Could not set emotion: ${error}`);
   }
 }
+
+export async function getAllEmotions(res, req) {
+  Emotion.find({})
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((error) => {
+      throw new Error(`Cannot get all emotions: ${error}`);
+    });
+}
