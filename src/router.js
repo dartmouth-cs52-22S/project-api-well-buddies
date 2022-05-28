@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import * as ProfileController from './controllers/profile_controller';
+import * as EmotionController from './controllers/emotion_controller';
 
 const router = Router();
 
@@ -36,6 +37,33 @@ router.get('/buddy/:jwt', async (req, res) => {
 }).patch('/buddy/:jwt', async (req, res) => {
   try {
     const buddy = await ProfileController.setBuddy(req.params.jwt);
+    res.json(buddy);
+  } catch (error) {
+    res.status(422).send({ error: error.toString() });
+  }
+});
+
+// get day emotion
+router.get('/emotion/:jwt/:date', async (req, res) => {
+  try {
+    const buddy = await ProfileController.setBuddy(req.params.jwt, req.params.date);
+    res.json(buddy);
+  } catch (error) {
+    res.status(422).send({ error: error.toString() });
+  }
+});
+
+// get all emotions or post (and get) today's emotion
+router.route('/emotion/:jwt').get(async (req, res) => {
+  try {
+    const emotions = await EmotionController.getAllEmotions(req.params.jwt);
+    res.json(emotions);
+  } catch (error) {
+    res.status(422).send({ error: error.toString() });
+  }
+}).post(async (req, res) => {
+  try {
+    const buddy = await EmotionController.getEmotion(req.params.jwt, req.body);
     res.json(buddy);
   } catch (error) {
     res.status(422).send({ error: error.toString() });
