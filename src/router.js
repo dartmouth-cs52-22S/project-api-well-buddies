@@ -68,6 +68,13 @@ router.route('/emotion/:jwt').get(async (req, res) => {
   } catch (error) {
     res.status(422).send({ error: error.toString() });
   }
+}).patch(async (req, res) => {
+  try {
+    const emotion = await EmotionController.set(req.params.jwt, req.body);
+    res.json(emotion);
+  } catch (error) {
+    res.status(422).send({ error: error.toString() });
+  }
 });
 
 export default router;

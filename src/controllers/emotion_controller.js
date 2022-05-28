@@ -30,31 +30,32 @@ export async function getEmotion(jwtToken, body) {
     }
 
     // emotion already exists
-    if (emotion !== null) {
-      return { title: emotion.title };
-    }
+    return { title: emotion.title };
   } catch (error) {
-    throw new Error(`Could not get emotions: ${error}`);
+    throw new Error(`Could not get emotion: ${error}`);
   }
 }
 
-export async function setEmotion(data) {
+export async function setEmotion(jwtToken, body) {
   try {
-    const email = jwt.decode(data.token, process.env.AUTH_SECRET);
+    const email = jwt.decode(jwtToken, process.env.AUTH_SECRET);
     const foundUser = await Profile.findOne({ email });
     if (foundUser === null) {
-      throw new Error('Emotion not found');
+      throw new Error('User not found');
     }
-    if (data.title !== '') {
-      foundUser.title = data.title;
-    }
-    if (data.user !== '') {
-      foundUser.user = data.user;
+    const today = Date.now();
+    const emotion = await Emotion.findOne({ user: foundUser, date: today });
+
+    if (emotion === null) {
+      throw new Error('Emotion log does not exist for today');
     }
 
-    const updatedUser = await foundUser.save();
+    emotion.title = body.title;
 
-    return { title: updatedUser.title, user: updatedUser.user, date: updatedUser.date };
+    const savedEmotion = await emotion.save();
+
+    // emotion already exists
+    return { title: savedEmotion.title };
   } catch (error) {
     throw new Error(`Could not set emotion: ${error}`);
   }
