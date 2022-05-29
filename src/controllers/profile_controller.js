@@ -21,28 +21,32 @@ export async function signin(data) {
 }
 
 export async function signup(data) {
-  if (!data.token) {
-    throw new Error('You must provide email and password');
+  try {
+    if (!data.token) {
+      throw new Error('You must provide email and password');
+    }
+
+    // See if a user with the given email exists
+    const existingUser = await Profile.findOne({ email: data.email });
+    if (existingUser !== null) {
+      // If a user with email does exist, return an error
+      throw new Error('Email is in use');
+    }
+
+    const verifiedUser = await verify(data.token);
+
+    const user = new Profile();
+    user.email = verifiedUser.email;
+    user.name = data.name;
+    user.stress = data.stress;
+    user.calm = data.calm;
+    user.pet = data.pet;
+    user.petName = data.petName;
+    await user.save();
+    return tokenForUser(user);
+  } catch (error) {
+    throw new Error(`Could not sign up: ${error}`);
   }
-
-  // See if a user with the given email exists
-  const existingUser = await Profile.findOne({ email: data.email });
-  if (existingUser) {
-    // If a user with email does exist, return an error
-    throw new Error('Email is in use');
-  }
-
-  const verifiedUser = await verify(data.token);
-
-  const user = new Profile();
-  user.email = verifiedUser.email;
-  user.name = data.name;
-  user.stress = data.stress;
-  user.calm = data.calm;
-  user.pet = data.pet;
-  user.petName = data.petName;
-  await user.save();
-  return tokenForUser(user);
 }
 
 export async function getBuddy(jwtToken) {
@@ -77,6 +81,40 @@ export async function setBuddy(data) {
     return { pet: updatedUser.pet, petName: updatedUser.petName };
   } catch (error) {
     throw new Error(`Could not save profile: ${error}`);
+  }
+}
+
+export async function getUser(jwtToken) {
+  try {
+    const email = jwt.decode(jwtToken, process.env.AUTH_SECRET);
+    const foundUser = await Profile.findOne({ email });
+    if (foundUser === null) {
+      throw new Error('Buddy not found');
+    }
+
+    return foundUser;
+  } catch (error) {
+    throw new Error(`Could not find user: ${error}`);
+  }
+}
+
+export async function updateName(jwtToken, body) {
+  try {
+    const email = jwt.decode(jwtToken, process.env.AUTH_SECRET);
+    const foundUser = await Profile.findOne({ email });
+    if (foundUser === null) {
+      throw new Error('Buddy not found');
+    }
+
+    if (body.name !== null) {
+      foundUser.name = body.name;
+    }
+
+    const updatedUser = foundUser.save();
+
+    return updatedUser;
+  } catch (error) {
+    throw new Error(`Could not update name: ${error}`);
   }
 }
 
