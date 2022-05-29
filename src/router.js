@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import * as ProfileController from './controllers/profile_controller';
+import * as EmotionController from './controllers/emotion_controller';
 
 const router = Router();
 
@@ -22,6 +23,7 @@ router.post('/signup', async (req, res) => {
     const jwt = await ProfileController.signup(req.body);
     res.json(jwt);
   } catch (error) {
+    console.log(`error ${error}`);
     res.status(422).send({ error: error.toString() });
   }
 });
@@ -37,6 +39,58 @@ router.get('/buddy/:jwt', async (req, res) => {
   try {
     const buddy = await ProfileController.setBuddy(req.params.jwt);
     res.json(buddy);
+  } catch (error) {
+    res.status(422).send({ error: error.toString() });
+  }
+});
+
+// get all emotions
+router.get('/emotions/:jwt').get(async (req, res) => {
+  try {
+    const emotions = await EmotionController.getAllEmotions(req.params.jwt);
+    res.json(emotions);
+  } catch (error) {
+    res.status(422).send({ error: error.toString() });
+  }
+});
+
+// get all emotions or post (and get) today's emotion
+router.route('/emotion/:jwt').get(async (req, res) => {
+  try {
+    const emotions = await EmotionController.getTodayEmotion(req.params.jwt);
+    console.log('got here');
+    res.json(emotions);
+  } catch (error) {
+    console.log(`get emotion error ${error}`);
+    res.status(422).send({ error: error.toString() });
+  }
+}).post(async (req, res) => {
+  try {
+    const emotion = await EmotionController.createEmotion(req.params.jwt, req.body);
+    res.json(emotion);
+  } catch (error) {
+    res.status(422).send({ error: error.toString() });
+  }
+}).patch(async (req, res) => {
+  try {
+    const emotion = await EmotionController.setEmotion(req.params.jwt, req.body);
+    res.json(emotion);
+  } catch (error) {
+    res.status(422).send({ error: error.toString() });
+  }
+});
+
+router.route('/profile/:jwt').get(async (req, res) => {
+  try {
+    const user = await ProfileController.getUser(req.params.jwt);
+    res.json(user);
+  } catch (error) {
+    res.status(422).send({ error: error.toString() });
+  }
+}).patch(async (req, res) => {
+  try {
+    const user = await ProfileController.updateName(req.params.jwt, req.body);
+    res.json(user);
   } catch (error) {
     res.status(422).send({ error: error.toString() });
   }
