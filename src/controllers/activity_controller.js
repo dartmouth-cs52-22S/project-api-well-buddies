@@ -1,4 +1,4 @@
-import Activity from '../models/activity_model'
+import Activity from '../models/activity_model';
 
 export async function newActivity(data) {
   const activity = new Activity();
@@ -43,7 +43,7 @@ export async function deleteActivity(res, req) {
 }
 
 export async function updateActivity(req, res) {
-  Post.findByIdAndUpdate(req.params.id, req.body)
+  Activity.findByIdAndUpdate(req.params.id, req.body)
     .then((result) => {
       res.json(result);
     })

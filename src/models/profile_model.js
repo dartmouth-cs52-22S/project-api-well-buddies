@@ -2,12 +2,12 @@ import mongoose, { Schema } from 'mongoose';
 
 const profileSchema = new Schema(
   {
-    user: { type: Schema.Types.ObjectId, ref: 'User' },
-    name: String,
     email: String,
-    stressful: [],
-    calm: [],
-
+    name: String,
+    stress: [String],
+    calm: [String],
+    pet: String,
+    petName: String,
   },
 
 );
