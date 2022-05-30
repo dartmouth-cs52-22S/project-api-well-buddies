@@ -29,11 +29,12 @@ const Activities = {
 
 function generateActivity () {
   let rand_index = Math.random() * 21; //where 21 is number of activities
-  let rand_activity = Activities[rand_index];
+  const keys = Activities.keys;
+  let rand_activity = keys[rand_index];
   if (profileModel.stress.includes(rand_activity)){
     generateActivity();
   }
-  return rand_activity;
+  return {rand_activity: Activities[rand_activity]}; //for activity and duration 
 }
 
 const mapStateToProps = (state) => ({
