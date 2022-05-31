@@ -42,7 +42,7 @@ export async function signup(data) {
     user.calm = data.calm;
     user.pet = data.pet;
     user.petName = data.petName;
-    user.star = data.star;
+    user.star = 0;
     await user.save();
     return tokenForUser(user);
   } catch (error) {

@@ -2,7 +2,7 @@ import { Router } from 'express';
 import * as ProfileController from './controllers/profile_controller';
 import * as EmotionController from './controllers/emotion_controller';
 import * as Activity from './activities';
-import * as ActivityController from './controllers/activity_controller'
+import * as ActivityController from './controllers/activity_controller';
 import * as EventController from './controllers/events_controller';
 
 const router = Router();
@@ -54,7 +54,7 @@ router.get('/buddy/:jwt', async (req, res) => {
 });
 
 // get all emotions
-router.get('/emotions/:jwt').get(async (req, res) => {
+router.routue('/emotions/:jwt').get(async (req, res) => {
   try {
     const emotions = await EmotionController.getAllEmotions(req.params.jwt);
     res.json(emotions);
@@ -105,6 +105,22 @@ router.route('/profile/:jwt').get(async (req, res) => {
   }
 });
 
+router.route('/profile/:jwt').get(async (req, res) => {
+  try {
+    const user = await ProfileController.getUser(req.params.jwt);
+    res.json(user);
+  } catch (error) {
+    res.status(422).send({ error: error.toString() });
+  }
+}).patch(async (req, res) => {
+  try {
+    const user = await ProfileController.updateStar(req.params.jwt, req.body);
+    res.json(user);
+  } catch (error) {
+    res.status(422).send({ error: error.toString() });
+  }
+});
+
 router.get('/activity/:jwt', async (req, res) => {
   try {
     const activities = await ActivityController.getActivities(req.params.jwt);
@@ -121,7 +137,7 @@ router.get('/activity/:jwt', async (req, res) => {
   }
 });
 
-router.get('event/:jwt/:completed', async(req, res) => {
+router.get('event/:jwt/:completed', async (req, res) => {
   try {
     const event = await Event.findEvent(req.params.jwt, req.params.completed);
     res.json(event);
