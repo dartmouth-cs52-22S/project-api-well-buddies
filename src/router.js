@@ -82,7 +82,7 @@ router.route('/emotion/:jwt').get(async (req, res) => {
   }
 });
 
-router.route('/profile/:jwt').get(async (req, res) => {
+router.route('/profile/:jwt/:duration').get(async (req, res) => {
   try {
     const user = await ProfileController.getUser(req.params.jwt);
     res.json(user);
