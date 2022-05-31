@@ -2,7 +2,7 @@ import mongoose, { Schema } from 'mongoose';
 
 const eventsSchema = new Schema(
   {
-    name: String,
+    completed: String,
     user: { type: Schema.Types.ObjectId, ref: 'User' },
   },
 

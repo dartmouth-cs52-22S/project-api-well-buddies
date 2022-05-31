@@ -8,7 +8,7 @@ export async function createEvent(jwtToken, data) {
     throw new Error('User not found');
   }
   const event = new Event();
-  event.name = data.name;
+  event.completed = data.completed;
   event.user = event.foundUser;
   try {
     const savedEvent = await event.save();
