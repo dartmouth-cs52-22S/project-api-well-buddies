@@ -37,7 +37,7 @@ export async function getActivities(jwtToken) {
     });
 }
 
-export async function getActivity(jwtToken, duration) {
+export async function getActivity(jwtToken) {
   try{
   const email = jwt.decode(jwtToken, process.env.AUTH_SECRET);
     const foundUser = await Profile.findOne({ email });

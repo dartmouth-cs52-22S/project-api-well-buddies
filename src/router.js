@@ -114,7 +114,7 @@ router.get('/activity/:jwt', async (req, res) => {
   }
 }).patch('/activity/:jwt/:duration', async (req, res) => {
   try {
-    const activity = await Activity.generateActivity(req.params.jwt, req.params.duration);
+    const activity = await Activity.generateActivity(req.params.duration);
     res.json(activity);
   } catch (error) {
     res.status(422).send({ error: error.toString() });

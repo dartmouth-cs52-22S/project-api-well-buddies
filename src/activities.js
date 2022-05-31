@@ -27,12 +27,12 @@ const Activities = {
   article: 5,
 }
 
-function generateActivity () {
+function generateActivity (duration) {
   let rand_index = Math.random() * 21; //where 21 is number of activities
   const keys = Activities.keys;
   let rand_activity = keys[rand_index];
-  if (profileModel.stress.includes(rand_activity)){
-    generateActivity();
+  if (profileModel.stress.includes(rand_activity) || duration < Activities[rand_activity]){
+    generateActivity(duration);
   }
   return {rand_activity: Activities[rand_activity]}; //for activity and duration 
 }
