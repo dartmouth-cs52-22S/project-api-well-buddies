@@ -1,4 +1,4 @@
-import profileModel from "./models/profile_model"
+/* import profileModel from "./models/profile_model"
 import { connect } from 'react-redux';
 
 const Activities = {
@@ -41,4 +41,4 @@ const mapStateToProps = (state) => ({
   events: state.events.all,
 });
 
-export default connect(mapStateToProps, { generateActivity })(Activities);
+export default connect(mapStateToProps, { generateActivity })(Activities); */
