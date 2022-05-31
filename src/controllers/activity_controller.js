@@ -2,7 +2,7 @@ import Activity from '../models/activity_model';
 import Profile from '../models/profile_model';
 
 import jwt from 'jwt-simple';
-import Activity from '../models/activity_model'
+// import Activity from '../models/activity_model'
 
 export async function newActivity(data) {
   const email = jwt.decode(jwtToken, process.env.AUTH_SECRET);

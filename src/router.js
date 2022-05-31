@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import * as ProfileController from './controllers/profile_controller';
 import * as EmotionController from './controllers/emotion_controller';
-import * as Activity from './activities';
+// import * as Activity from './activities';
 import * as ActivityController from './controllers/activity_controller'
 import * as EventController from './controllers/events_controller';
 
@@ -112,16 +112,16 @@ router.get('/activity/:jwt', async (req, res) => {
   } catch (error) {
     res.status(422).send({ error: error.toString() });
   }
-}).patch('/activity/:jwt/:duration', async (req, res) => {
+})/* .patch('/activity/:jwt/:duration', async (req, res) => {
   try {
     const activity = await Activity.generateActivity(req.params.duration);
     res.json(activity);
   } catch (error) {
     res.status(422).send({ error: error.toString() });
   }
-});
+}) */;
 
-router.get('event/:jwt/:completed', async(req, res) => {
+router.get('event/:jwt/:completed', async (req, res) => {
   try {
     const event = await Event.findEvent(req.params.jwt, req.params.completed);
     res.json(event);
