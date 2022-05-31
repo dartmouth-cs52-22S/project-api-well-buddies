@@ -2,9 +2,8 @@ import mongoose, { Schema } from 'mongoose';
 
 const profileSchema = new Schema(
   {
-    user: String,
+    email: String,
     name: String,
-    token: String,
     stress: [String],
     calm: [String],
     pet: String,

@@ -1,49 +1,62 @@
+import jwt from 'jwt-simple';
+import dotenv from 'dotenv';
 import Profile from '../models/profile_model';
+import { verify } from '../services/googleVerification';
+
+dotenv.config({ silent: true });
 
 export async function signin(data) {
   try {
-    const user = await Profile.findOne({ token: data.token });
-    return { token: data.token.slice(0, 100) };
+    const verifiedUser = await verify(data.token);
+    console.log(verifiedUser);
+    const user = await Profile.findOne({ email: verifiedUser.email });
+    if (user) {
+      return tokenForUser(user);
+    } else {
+      throw new Error('User or token invalid.');
+    }
   } catch (error) {
-    throw new Error(`Could not save profile: ${error}`);
+    throw new Error(`Could not sign in: ${error}`);
   }
 }
 
 export async function signup(data) {
-  if (!data.token) {
-    throw new Error('You must provide email and password');
-  }
+  try {
+    if (!data.token) {
+      throw new Error('You must provide email and password');
+    }
 
-  // See if a user with the given email exists
-  const existingUser = await Profile.findOne({ token: data.token });
-  if (existingUser) {
-    // If a user with email does exist, return an error
-    throw new Error('Email is in use');
-  }
+    // See if a user with the given email exists
+    const existingUser = await Profile.findOne({ email: data.email });
+    if (existingUser !== null) {
+      // If a user with email does exist, return an error
+      throw new Error('Email is in use');
+    }
 
-  const user = new Profile();
-  user.user = data.googleUser;
-  user.token = data.token.slice(0, 100);
-  user.name = data.name;
-  user.stress = data.stress;
-  user.calm = data.calm;
-  user.pet = data.pet;
-  user.petName = data.petName;
-  await user.save();
-  return { token: data.token.slice(0, 100) };
+    const verifiedUser = await verify(data.token);
+
+    const user = new Profile();
+    user.email = verifiedUser.email;
+    user.name = data.name;
+    user.stress = data.stress;
+    user.calm = data.calm;
+    user.pet = data.pet;
+    user.petName = data.petName;
+    await user.save();
+    return tokenForUser(user);
+  } catch (error) {
+    throw new Error(`Could not sign up: ${error}`);
+  }
 }
 
-export async function getBuddy(idToken) {
+export async function getBuddy(jwtToken) {
   try {
-    const temp = await Profile.findOne({ pet: 'Panda' });
-    console.log('temp', temp);
-    const user = await Profile.findOne({ token: idToken });
-    console.log('user', user);
-    if (user === null) {
-      console.log('buddynotfound');
+    const email = jwt.decode(jwtToken, process.env.AUTH_SECRET);
+    const foundUser = await Profile.findOne({ email });
+    if (foundUser === null) {
       throw new Error('Buddy not found');
     }
-    return { pet: user.pet, petName: user.petName };
+    return { pet: foundUser.pet, petName: foundUser.petName };
   } catch (error) {
     throw new Error(`Could not save profile: ${error}`);
   }
@@ -51,19 +64,60 @@ export async function getBuddy(idToken) {
 
 export async function setBuddy(data) {
   try {
-    const user = await Profile.findOne({ token: data.idToken });
-    if (user === null) {
+    const email = jwt.decode(data.token, process.env.AUTH_SECRET);
+    const foundUser = await Profile.findOne({ email });
+    if (foundUser === null) {
       throw new Error('Buddy not found');
     }
     if (data.pet !== '') {
-      user.pet = data.pet;
+      foundUser.pet = data.pet;
     }
     if (data.petName !== '') {
-      user.petName = data.petName;
+      foundUser.petName = data.petName;
     }
-    // TODO: look at lab to see if check to make sure user is saved
-    return user;
+
+    const updatedUser = await foundUser.save();
+
+    return { pet: updatedUser.pet, petName: updatedUser.petName };
   } catch (error) {
     throw new Error(`Could not save profile: ${error}`);
   }
+}
+
+export async function getUser(jwtToken) {
+  try {
+    const email = jwt.decode(jwtToken, process.env.AUTH_SECRET);
+    const foundUser = await Profile.findOne({ email });
+    if (foundUser === null) {
+      throw new Error('Buddy not found');
+    }
+
+    return foundUser;
+  } catch (error) {
+    throw new Error(`Could not find user: ${error}`);
+  }
+}
+
+export async function updateName(jwtToken, body) {
+  try {
+    const email = jwt.decode(jwtToken, process.env.AUTH_SECRET);
+    const foundUser = await Profile.findOne({ email });
+    if (foundUser === null) {
+      throw new Error('Buddy not found');
+    }
+
+    if (body.name !== null) {
+      foundUser.name = body.name;
+    }
+
+    const updatedUser = foundUser.save();
+
+    return updatedUser;
+  } catch (error) {
+    throw new Error(`Could not update name: ${error}`);
+  }
+}
+
+function tokenForUser(user) {
+  return jwt.encode(user.email, process.env.AUTH_SECRET);
 }
