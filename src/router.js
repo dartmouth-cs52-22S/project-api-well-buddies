@@ -54,7 +54,7 @@ router.get('/buddy/:jwt', async (req, res) => {
 });
 
 // get all emotions
-router.routue('/emotions/:jwt').get(async (req, res) => {
+router.route('/emotions/:jwt').get(async (req, res) => {
   try {
     const emotions = await EmotionController.getAllEmotions(req.params.jwt);
     res.json(emotions);
@@ -105,17 +105,17 @@ router.route('/profile/:jwt').get(async (req, res) => {
   }
 });
 
-router.route('/profile/:jwt').get(async (req, res) => {
+router.get('/star/:jwt', async (req, res) => {
   try {
-    const user = await ProfileController.getUser(req.params.jwt);
-    res.json(user);
+    const star = await ProfileController.getStar(req.params.jwt);
+    res.json(star);
   } catch (error) {
     res.status(422).send({ error: error.toString() });
   }
-}).patch(async (req, res) => {
+}).patch('/star/:jwt', async (req, res) => {
   try {
-    const user = await ProfileController.updateStar(req.params.jwt, req.body);
-    res.json(user);
+    const star = await ProfileController.updateStar(req.params.jwt, req.body);
+    res.json(star);
   } catch (error) {
     res.status(422).send({ error: error.toString() });
   }
