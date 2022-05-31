@@ -27,7 +27,7 @@ const Activities = {
   article: 5,
 }
 
-function generateActivity () {
+function generateActivity (duration) {
   let rand_index = Math.random() * 21; //where 21 is number of activities
   const keys = Activities.keys;
   let rand_activity = keys[rand_index];
