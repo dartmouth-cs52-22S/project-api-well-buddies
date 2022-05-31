@@ -82,7 +82,7 @@ router.route('/emotion/:jwt').get(async (req, res) => {
   }
 });
 
-router.route('/profile/:jwt/:duration').get(async (req, res) => {
+router.route('/profile/:jwt').get(async (req, res) => {
   try {
     const user = await ProfileController.getUser(req.params.jwt);
     res.json(user);
@@ -98,7 +98,7 @@ router.route('/profile/:jwt/:duration').get(async (req, res) => {
   }
 });
 
-router.get('/activity/:jwt', async (req, res) => {
+router.get('/activity/:jwt/:duration', async (req, res) => {
   try {
     const activities = await ActivityController.getActivities(req.params.jwt);
     res.json(activities);
