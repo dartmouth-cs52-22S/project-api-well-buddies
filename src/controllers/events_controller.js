@@ -12,28 +12,43 @@ export async function createEvent(jwtToken, data) {
   event.user = event.foundUser;
   try {
     const savedEvent = await event.save();
-    return savedEvent;
+    return {completed: savedEvent.completed};
   } catch (error) {
     throw new Error(`create event error: ${error}`);
   }
 }
 
-export async function deleteEvent(res, req) {
-  Event.findByIdAndDelete(req.params.id)
-    .then((result) => {
-      res.json(result);
-    })
-    .catch((error) => {
-      throw new Error(`delete event error: ${error}`);
-    });
+export async function deleteEvent(jwtToken) {
+  try{
+    const email = jwt.decode(jwtToken, process.env.AUTH_SECRET);
+      const foundUser = await Profile.findOne({ email });
+      if (foundUser === null) {
+        throw new Error('User not found');
+      }
+    const event = await Event.findByIdAndDelete({  user: foundUser});
+    return event;
+    } catch (error) {
+      throw new Error(`Could not delete event: ${error}`);
+    }
 }
 
-export async function findEvent(res, req, completed) {
-  Event.findById(req.params.id)
-    .then((result) => {
-      res.json(result);
-    })
-    .catch((error) => {
-      throw new Error(`find event error: ${error}`);
-    });
+export async function findEvent(jwtToken, completed) {
+  try{
+  const email = jwt.decode(jwtToken, process.env.AUTH_SECRET);
+  const foundUser = await Profile.findOne({ email });
+    if (foundUser === null) {
+      throw new Error('User not found');
+    }
+  const event = await Event.findOne({ completed, user: foundUser});
+
+  if (event === null) {
+    console.log('event not located');
+    return { title: '' };
+  }
+
+  return { title: event.title };
+
+  } catch (error) {
+    throw new Error(`Could not get event: ${error}`);
+  }
 }
