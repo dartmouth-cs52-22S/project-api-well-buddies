@@ -13,8 +13,11 @@ router.post('/signin', async (req, res) => {
     const jwt = await ProfileController.signin(req.body);
     res.json(jwt);
   } catch (error) {
-    console.log(error);
-    res.status(422).send({ error: error.toString() });
+    if (error.message === 'Sign in error: Error: An account for this email does not exist.') {
+      res.status(409).send('A user with this email already exists!');
+    } else {
+      res.status(422).send({ error: error.toString() });
+    }
   }
 });
 
@@ -23,8 +26,11 @@ router.post('/signup', async (req, res) => {
     const jwt = await ProfileController.signup(req.body);
     res.json(jwt);
   } catch (error) {
-    console.log(`error ${error}`);
-    res.status(422).send({ error: error.toString() });
+    if (error.message === 'Sign up error: Error: Email is in use') {
+      res.status(409).send('A user with this email already exists!');
+    } else {
+      res.status(422).send({ error: error.toString() });
+    }
   }
 });
 

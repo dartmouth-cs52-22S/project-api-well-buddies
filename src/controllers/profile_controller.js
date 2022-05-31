@@ -13,10 +13,10 @@ export async function signin(data) {
     if (user) {
       return tokenForUser(user);
     } else {
-      throw new Error('User or token invalid.');
+      throw new Error('An account for this email does not exist.');
     }
   } catch (error) {
-    throw new Error(`Could not sign in: ${error}`);
+    throw new Error(`Sign in error: ${error}`);
   }
 }
 
@@ -26,14 +26,14 @@ export async function signup(data) {
       throw new Error('You must provide email and password');
     }
 
+    const verifiedUser = await verify(data.token);
+
     // See if a user with the given email exists
-    const existingUser = await Profile.findOne({ email: data.email });
+    const existingUser = await Profile.findOne({ email: verifiedUser.email });
     if (existingUser !== null) {
       // If a user with email does exist, return an error
       throw new Error('Email is in use');
     }
-
-    const verifiedUser = await verify(data.token);
 
     const user = new Profile();
     user.email = verifiedUser.email;
@@ -45,7 +45,7 @@ export async function signup(data) {
     await user.save();
     return tokenForUser(user);
   } catch (error) {
-    throw new Error(`Could not sign up: ${error}`);
+    throw new Error(`Sign up error: ${error}`);
   }
 }
 
