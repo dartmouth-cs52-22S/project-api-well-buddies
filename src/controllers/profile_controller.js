@@ -60,11 +60,16 @@ export async function getStar(jwtToken) {
     if (foundUser === null) {
       throw new Error('Star not found');
     }
-    return { pet: foundUser.pet, star: foundUser.star };
+    if (foundUser.star) {
+      return { pet: foundUser.pet, star: foundUser.star };
+    } else {
+      throw new Error('star not found');
+    }
   } catch (error) {
     throw new Error(`Could not get star: ${error}`);
   }
 }
+
 export async function updateStar(jwtToken, body) {
   try {
     const email = jwt.decode(jwtToken, process.env.AUTH_SECRET);
