@@ -34,78 +34,107 @@ const activitiesList = [
   {
     title: 'Call your parents',
     duration: 15,
+    icon: '&#9742;',
   },
   {
     title: 'Go for a walk',
     duration: 30,
+    icon: '&#128694;',
   },
   {
     title: 'Go for a short walk',
     duration: 15,
+    icon: '&#128694;',
   },
   {
     title: 'Go to the gym',
     duration: 60,
+    icon: '&#127947;',
   },
   {
     title: 'Take a nap',
     duration: 15,
+    icon: '&#128564;',
   },
   {
     title: 'Catch up with old friends',
     duration: 20,
+    icon: '&#128150;',
   },
   {
     title: 'Listen to a new song',
     duration: 10,
+    icon: '&#127926;',
   },
   {
     title: 'Meditate',
     duration: 15,
+    icon: '&#129496;',
   },
   {
     title: 'Clean a space',
     duration: 20,
+    icon: '&#129529;',
   },
   {
     title: 'Go for a drive',
     duration: 20,
+    icon: '&#128663;',
   },
   {
     title: 'Go for a bike ride',
     duration: 30,
+    icon: '&#128690;',
   },
   {
     title: 'Rollerblade',
     duration: 20,
+    icon: '&#128764;',
   },
   {
     title: 'Read a chapter of a book',
     duration: 20,
+    icon: '&#128214;',
   },
   {
     title: 'Journal',
     duration: 10,
+    icon: '&#128214;',
   },
   {
     title: 'Listen to a podcast',
     duration: 30,
+    icon: '&#127911;',
   },
   {
     title: 'Drink water',
     duration: 5,
+    icon: '&#129380;',
   },
   {
     title: 'Stretch',
     duration: 5,
+    icon: '&#129336;',
   },
   {
     title: 'Take a deep breath',
     duration: 5,
+    icon: '&#128168;',
   },
   {
     title: 'Clean your desk space',
     duration: 20,
+    icon: '&#129529;',
+  },
+  {
+    title: 'Water your plants',
+    duration: 5,
+    icon: '&#129716;',
+  },
+  {
+    title: 'Watch the sunrise',
+    duration: 20,
+    icon: '&#127748;',
   },
 ];
 
