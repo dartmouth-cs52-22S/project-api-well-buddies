@@ -1,6 +1,7 @@
 import jwt from 'jwt-simple';
 import Event from '../models/events_model';
 import Profile from '../models/profile_model';
+import { activitiesList } from '../activities';
 
 export async function completeEvent(jwtToken, newEventId, wellnessValue) {
   try {
@@ -14,12 +15,16 @@ export async function completeEvent(jwtToken, newEventId, wellnessValue) {
       userEvents = new Event();
       userEvents.user = foundUser;
     }
-    console.log(newEventId);
     userEvents.completedEvents.push({ eventId: newEventId, wellness: wellnessValue });
     if (wellnessValue) {
       foundUser.recentCompletedWellness = new Date(Date.now());
+      if (foundUser.star) {
+        foundUser.star += 10;
+      } else {
+        foundUser.star = 10;
+      }
     }
-    const savedUser = await foundUser.save();
+    await foundUser.save();
     const savedEvent = await userEvents.save();
     const allEvents = savedEvent.completedEvents.map(({ eventId, wellness }) => { return eventId; });
     return allEvents;
