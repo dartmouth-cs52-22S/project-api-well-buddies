@@ -105,6 +105,22 @@ router.route('/profile/:jwt').get(async (req, res) => {
   }
 });
 
+router.get('/star/:jwt', async (req, res) => {
+  try {
+    const star = await ProfileController.getStar(req.params.jwt);
+    res.json(star);
+  } catch (error) {
+    res.status(422).send({ error: error.toString() });
+  }
+}).patch('/star/:jwt', async (req, res) => {
+  try {
+    const star = await ProfileController.updateStar(req.params.jwt, req.body);
+    res.json(star);
+  } catch (error) {
+    res.status(422).send({ error: error.toString() });
+  }
+});
+
 router.get('/activity/:jwt', async (req, res) => {
   try {
     const activity = await generateActivity(req.params.jwt, req.query.duration);

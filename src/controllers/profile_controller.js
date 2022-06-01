@@ -42,12 +42,45 @@ export async function signup(data) {
     user.calm = data.calm;
     user.pet = data.pet;
     user.petName = data.petName;
+    user.star = 0;
     user.activity.lastSuggested = new Date(0);
     user.activity.activityName = '';
     await user.save();
     return tokenForUser(user);
   } catch (error) {
     throw new Error(`Sign up error: ${error}`);
+  }
+}
+
+export async function getStar(jwtToken) {
+  try {
+    const email = jwt.decode(jwtToken, process.env.AUTH_SECRET);
+    const foundUser = await Profile.findOne({ email });
+    if (foundUser === null) {
+      throw new Error('Star not found');
+    }
+    return { pet: foundUser.pet, star: foundUser.star };
+  } catch (error) {
+    throw new Error(`Could not get star: ${error}`);
+  }
+}
+export async function updateStar(jwtToken, body) {
+  try {
+    const email = jwt.decode(jwtToken, process.env.AUTH_SECRET);
+    const foundUser = await Profile.findOne({ email });
+    if (foundUser === null) {
+      throw new Error('Buddy not found');
+    }
+
+    if (body.star !== null) {
+      foundUser.star = body.star;
+    }
+
+    const updatedUser = await foundUser.save();
+
+    return updatedUser;
+  } catch (error) {
+    throw new Error(`Could not update star: ${error}`);
   }
 }
 
