@@ -132,7 +132,7 @@ router.get('/activity/:jwt', async (req, res) => {
 router.get('/activity/today/:jwt', async (req, res) => {
   try {
     const activity = await ProfileController.completedToday(req.params.jwt);
-    console.log(activity);
+
     res.json(activity);
   } catch (error) {
     console.log(error);
