@@ -85,15 +85,12 @@ export async function getAllEmotions(jwtToken) {
   const email = jwt.decode(jwtToken, process.env.AUTH_SECRET);
   const foundUser = await Profile.findOne({ email });
 
-  // code adapted from https://stackoverflow.com/questions/33627238/mongoose-find-with-multiple-conditions
-  Emotion.find({ user: foundUser })
-    .then((err, user) => {
-      // if there is an error retrieving, send the error. nothing after res.send(err) will execute
-      if (err) {
-        throw new Error(`Could not get emotions ${err}`);
-      }
-      // return all users in JSON format
-      console.log(user);
-      return JSON.parse(user);
-    });
+  let emotions = await Emotion.find({ user: foundUser });
+  let finalDict = {};
+  emotions.map((emotion) => {
+    // return all users in JSON format
+    const date = new Date(emotion.date);
+    finalDict[date.toDateString()] = emotion.title;
+  });
+  return finalDict;
 }

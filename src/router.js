@@ -55,8 +55,9 @@ router.get('/buddy/:jwt', async (req, res) => {
 });
 
 // get all emotions
-router.get('/emotions/:jwt').get(async (req, res) => {
+router.route('/emotions/:jwt').get(async (req, res) => {
   try {
+    console.log('got here');
     const emotions = await EmotionController.getAllEmotions(req.params.jwt);
     res.json(emotions);
   } catch (error) {
