@@ -2,12 +2,12 @@ import mongoose, { Schema } from 'mongoose';
 
 const eventsSchema = new Schema(
   {
-    title: String,
+    completedEvents: [{ eventId: String, wellness: Boolean }],
     user: { type: Schema.Types.ObjectId, ref: 'User' },
   },
 
 );
 
-const eventsModel = mongoose.model('Event', eventsSchema);
+const eventModel = mongoose.model('Event', eventsSchema);
 
-export default eventsModel;
+export default eventModel;
