@@ -62,13 +62,14 @@ export async function getBuddy(jwtToken) {
   }
 }
 
-export async function setBuddy(data) {
+export async function setBuddy(jwtToken, data) {
   try {
-    const email = jwt.decode(data.token, process.env.AUTH_SECRET);
+    const email = jwt.decode(jwtToken, process.env.AUTH_SECRET);
     const foundUser = await Profile.findOne({ email });
     if (foundUser === null) {
       throw new Error('Buddy not found');
     }
+    console.log('data', data);
     if (data.pet !== '') {
       foundUser.pet = data.pet;
     }
