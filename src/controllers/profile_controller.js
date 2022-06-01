@@ -43,6 +43,7 @@ export async function signup(data) {
     user.petName = data.petName;
     user.star = 0;
     user.activity.lastSuggested = new Date(0);
+    user.recentCompletedWellness = new Date(0);
     user.activity.activityName = '';
     await user.save();
     return tokenForUser(user);
@@ -149,6 +150,24 @@ export async function updateName(jwtToken, body) {
     return updatedUser;
   } catch (error) {
     throw new Error(`Could not update name: ${error}`);
+  }
+}
+
+export async function completedToday(jwtToken) {
+  try {
+    const email = jwt.decode(jwtToken, process.env.AUTH_SECRET);
+    const foundUser = await Profile.findOne({ email });
+    if (foundUser === null) {
+      throw new Error('Buddy not found');
+    }
+    const today = new Date(Date.now());
+    if (foundUser.recentCompletedWellness) {
+      return (foundUser.recentCompletedWellness.toDateString() === today.toDateString());
+    } else {
+      return false;
+    }
+  } catch (error) {
+    throw new Error(error);
   }
 }
 

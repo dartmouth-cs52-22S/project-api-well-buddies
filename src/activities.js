@@ -120,7 +120,7 @@ async function generateActivity(jwtToken, duration) {
     const today = new Date(Date.now());
     if (foundUser.activity.lastSuggested) {
       if (foundUser.activity.lastSuggested.toDateString() === today.toDateString()) {
-        throw new Error('Already suggested an activity today!');
+        // throw new Error('Already suggested an activity today!');
       }
     } else {
       foundUser.activity = {};
