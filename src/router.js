@@ -1,8 +1,6 @@
 import { Router } from 'express';
 import * as ProfileController from './controllers/profile_controller';
 import * as EmotionController from './controllers/emotion_controller';
-// import * as Activity from './activities';
-import * as ActivityController from './controllers/activity_controller';
 import * as EventController from './controllers/events_controller';
 import generateActivity from './activities';
 
@@ -112,6 +110,7 @@ router.get('/activity/:jwt', async (req, res) => {
     const activity = await generateActivity(req.params.jwt, req.query.duration);
     res.json(activity);
   } catch (error) {
+    console.log(error);
     res.status(422).send({ error: error.toString() });
   }
 });
