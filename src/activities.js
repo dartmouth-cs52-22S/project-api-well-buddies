@@ -139,20 +139,40 @@ const activitiesList = [
 ];
 
 async function generateActivity(jwtToken, duration) {
-  const email = jwt.decode(jwtToken, process.env.AUTH_SECRET);
-  const foundUser = await Profile.findOne({ email });
+  try {
+    const email = jwt.decode(jwtToken, process.env.AUTH_SECRET);
+    const foundUser = await Profile.findOne({ email });
 
-  let goodActivity = false;
-  let activity = null;
-
-  while (!goodActivity) {
-    activity = activitiesList[Math.floor(Math.random() * activitiesList.length)];
-    if (activity.duration < duration || !foundUser.stress.includes(activity.title)) {
-      goodActivity = true;
+    const today = new Date(Date.now());
+    console.log(foundUser.activity.lastSuggested);
+    if (foundUser.activity.lastSuggested) {
+      if (foundUser.activity.lastSuggested.toDateString() === today.toDateString()) {
+        throw new Error('Already suggested an activity today!');
+      }
+    } else {
+      foundUser.activity = {};
+      foundUser.activity.lastSuggested = Date.now();
+      foundUser.activity.activityName = '';
     }
-  }
 
-  return activity; // for activity and duration
+    let goodActivity = false;
+    let activity = null;
+
+    while (!goodActivity) {
+      activity = activitiesList[Math.floor(Math.random() * activitiesList.length)];
+      if (activity.duration < duration || !foundUser.stress.includes(activity.title)) {
+        goodActivity = true;
+      }
+    }
+
+    foundUser.activity.lastSuggested = Date.now();
+    foundUser.activity.activityName = activity.title;
+    await foundUser.save();
+
+    return activity; // for activity and duration
+  } catch (error) {
+    throw new Error(error);
+  }
 }
 
 export default generateActivity;

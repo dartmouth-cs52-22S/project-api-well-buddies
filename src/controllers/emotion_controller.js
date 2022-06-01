@@ -57,6 +57,7 @@ export async function getTodayEmotion(jwtToken) {
     throw new Error(`Could not get emotion: ${error}`);
   }
 }
+
 export async function setEmotion(jwtToken, body) {
   try {
     const email = jwt.decode(jwtToken, process.env.AUTH_SECRET);

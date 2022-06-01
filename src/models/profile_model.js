@@ -8,6 +8,8 @@ const profileSchema = new Schema(
     calm: [String],
     pet: String,
     petName: String,
+    star: Number,
+    activity: { lastSuggested: Date, activityName: String }
   },
 
 );

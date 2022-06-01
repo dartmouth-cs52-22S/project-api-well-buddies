@@ -1,8 +1,6 @@
 import { Router } from 'express';
 import * as ProfileController from './controllers/profile_controller';
 import * as EmotionController from './controllers/emotion_controller';
-// import * as Activity from './activities';
-import * as ActivityController from './controllers/activity_controller';
 import * as EventController from './controllers/events_controller';
 import generateActivity from './activities';
 
@@ -56,8 +54,9 @@ router.get('/buddy/:jwt', async (req, res) => {
 });
 
 // get all emotions
-router.get('/emotions/:jwt').get(async (req, res) => {
+router.route('/emotions/:jwt').get(async (req, res) => {
   try {
+    console.log('got here');
     const emotions = await EmotionController.getAllEmotions(req.params.jwt);
     res.json(emotions);
   } catch (error) {
@@ -107,29 +106,59 @@ router.route('/profile/:jwt').get(async (req, res) => {
   }
 });
 
+router.get('/star/:jwt', async (req, res) => {
+  try {
+    const star = await ProfileController.getStar(req.params.jwt);
+    res.json(star);
+  } catch (error) {
+    res.status(422).send({ error: error.toString() });
+  }
+}).patch('/star/:jwt', async (req, res) => {
+  try {
+    const star = await ProfileController.updateStar(req.params.jwt, req.body);
+    res.json(star);
+  } catch (error) {
+    res.status(422).send({ error: error.toString() });
+  }
+});
+
 router.get('/activity/:jwt', async (req, res) => {
   try {
     const activity = await generateActivity(req.params.jwt, req.query.duration);
     res.json(activity);
   } catch (error) {
+    console.log(error);
     res.status(422).send({ error: error.toString() });
   }
 });
 
 router.get('/activity/today/:jwt', async (req, res) => {
   try {
-    const activity = await ActivityController.getTodayActivity(req.params.jwt);
+    const activity = await ProfileController.getTodayActivity(req.params.jwt);
     res.json(activity);
   } catch (error) {
     res.status(422).send({ error: error.toString() });
   }
 });
 
-router.get('event/:jwt/:completed', async (req, res) => {
+router.route('/event/:jwt').get(async (req, res) => {
   try {
-    const event = await Event.findEvent(req.params.jwt, req.params.completed);
+    const events = await EventController.completedEvents(req.params.jwt);
+    res.json(events);
+  } catch (error) {
+    res.status(422).send({ error: error.toString() });
+  }
+}).post(async (req, res) => {
+  try {
+    let event = '';
+    if (req.body.wellness !== '') {
+      event = await EventController.completeEvent(req.params.jwt, req.body.event, true);
+    } else {
+      event = await EventController.completeEvent(req.params.jwt, req.body.event, false);
+    }
     res.json(event);
   } catch (error) {
+    console.log(error);
     res.status(422).send({ error: error.toString() });
   }
 });
