@@ -8,7 +8,6 @@ dotenv.config({ silent: true });
 export async function signin(data) {
   try {
     const verifiedUser = await verify(data.token);
-    console.log(verifiedUser);
     const user = await Profile.findOne({ email: verifiedUser.email });
     if (user) {
       return tokenForUser(user);

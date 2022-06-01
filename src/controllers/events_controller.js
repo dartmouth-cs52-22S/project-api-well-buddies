@@ -14,7 +14,6 @@ export async function completeEvent(jwtToken, newEventId, wellnessValue) {
       userEvents = new Event();
       userEvents.user = foundUser;
     }
-    console.log(newEventId);
     userEvents.completedEvents.push({ eventId: newEventId, wellness: wellnessValue });
     const savedEvent = await userEvents.save();
     const allEvents = savedEvent.completedEvents.map(({ eventId, wellness }) => { return eventId; });
