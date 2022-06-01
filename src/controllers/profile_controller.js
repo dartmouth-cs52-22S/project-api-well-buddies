@@ -74,7 +74,7 @@ export async function updateStar(jwtToken, body) {
       foundUser.star = body.star;
     }
 
-    const updatedUser = foundUser.save();
+    const updatedUser = await foundUser.save();
 
     return updatedUser;
   } catch (error) {
