@@ -2,7 +2,7 @@ import { Router } from 'express';
 import * as ProfileController from './controllers/profile_controller';
 import * as EmotionController from './controllers/emotion_controller';
 // import * as Activity from './activities';
-import * as ActivityController from './controllers/activity_controller'
+import * as ActivityController from './controllers/activity_controller';
 import * as EventController from './controllers/events_controller';
 
 const router = Router();
@@ -113,20 +113,26 @@ router.get('/activity/:jwt', async (req, res) => {
   } catch (error) {
     res.status(422).send({ error: error.toString() });
   }
-})/* .patch('/activity/:jwt/:duration', async (req, res) => {
+});
+
+router.route('/event/:jwt').get(async (req, res) => {
   try {
-    const activity = await Activity.generateActivity(req.params.duration);
-    res.json(activity);
+    const events = await EventController.completedEvents(req.params.jwt);
+    res.json(events);
   } catch (error) {
     res.status(422).send({ error: error.toString() });
   }
-}) */;
-
-router.get('event/:jwt/:completed', async (req, res) => {
+}).post(async (req, res) => {
   try {
-    const event = await Event.findEvent(req.params.jwt, req.params.completed);
+    let event = '';
+    if (req.body.wellness !== '') {
+      event = await EventController.completeEvent(req.params.jwt, req.body.event, true);
+    } else {
+      event = await EventController.completeEvent(req.params.jwt, req.body.event, false);
+    }
     res.json(event);
   } catch (error) {
+    console.log(error);
     res.status(422).send({ error: error.toString() });
   }
 });
