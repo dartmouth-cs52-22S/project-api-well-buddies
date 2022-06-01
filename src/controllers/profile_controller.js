@@ -42,6 +42,8 @@ export async function signup(data) {
     user.calm = data.calm;
     user.pet = data.pet;
     user.petName = data.petName;
+    user.activity.lastSuggested = new Date(0);
+    user.activity.activityName = '';
     await user.save();
     return tokenForUser(user);
   } catch (error) {
