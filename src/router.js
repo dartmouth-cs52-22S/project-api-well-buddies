@@ -116,11 +116,24 @@ router.get('/activity/:jwt', async (req, res) => {
   }
 });
 
-router.get('event/:jwt/:completed', async (req, res) => {
+router.route('/event/:jwt').get(async (req, res) => {
   try {
-    const event = await Event.findEvent(req.params.jwt, req.params.completed);
+    const events = await EventController.completedEvents(req.params.jwt);
+    res.json(events);
+  } catch (error) {
+    res.status(422).send({ error: error.toString() });
+  }
+}).post(async (req, res) => {
+  try {
+    let event = '';
+    if (req.body.wellness !== '') {
+      event = await EventController.completeEvent(req.params.jwt, req.body.event, true);
+    } else {
+      event = await EventController.completeEvent(req.params.jwt, req.body.event, false);
+    }
     res.json(event);
   } catch (error) {
+    console.log(error);
     res.status(422).send({ error: error.toString() });
   }
 });

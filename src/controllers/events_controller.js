@@ -1,54 +1,43 @@
-import Event from '../models/events_model';
 import jwt from 'jwt-simple';
+import Event from '../models/events_model';
+import Profile from '../models/profile_model';
 
-export async function createEvent(jwtToken, data) {
-  const email = jwt.decode(jwtToken, process.env.AUTH_SECRET);
-  const foundUser = await Profile.findOne({ email });
-  if (foundUser === null) {
-    throw new Error('User not found');
-  }
-  const event = new Event();
-  event.completed = data.completed;
-  event.user = event.foundUser;
+export async function completeEvent(jwtToken, newEventId, wellnessValue) {
   try {
-    const savedEvent = await event.save();
-    return {completed: savedEvent.completed};
+    const email = jwt.decode(jwtToken, process.env.AUTH_SECRET);
+    const foundUser = await Profile.findOne({ email });
+    if (foundUser === null) {
+      throw new Error('User not found');
+    }
+    let userEvents = await Event.findOne({ user: foundUser });
+    if (userEvents === null) {
+      userEvents = new Event();
+      userEvents.user = foundUser;
+    }
+    console.log(newEventId);
+    userEvents.completedEvents.push({ eventId: newEventId, wellness: wellnessValue });
+    const savedEvent = await userEvents.save();
+    const allEvents = savedEvent.completedEvents.map(({ eventId, wellness }) => { return eventId; });
+    return allEvents;
   } catch (error) {
     throw new Error(`create event error: ${error}`);
   }
 }
 
-export async function deleteEvent(jwtToken) {
-  try{
+export async function completedEvents(jwtToken) {
+  try {
     const email = jwt.decode(jwtToken, process.env.AUTH_SECRET);
-      const foundUser = await Profile.findOne({ email });
-      if (foundUser === null) {
-        throw new Error('User not found');
-      }
-    const event = await Event.findByIdAndDelete({  user: foundUser});
-    return event;
-    } catch (error) {
-      throw new Error(`Could not delete event: ${error}`);
-    }
-}
-
-export async function findEvent(jwtToken, completed) {
-  try{
-  const email = jwt.decode(jwtToken, process.env.AUTH_SECRET);
-  const foundUser = await Profile.findOne({ email });
+    const foundUser = await Profile.findOne({ email });
     if (foundUser === null) {
       throw new Error('User not found');
     }
-  const event = await Event.findOne({ completed, user: foundUser});
-
-  if (event === null) {
-    console.log('event not located');
-    return { title: '' };
-  }
-
-  return { title: event.title };
-
+    const userEvents = await Event.findOne({ user: foundUser });
+    if (userEvents === null) {
+      return [];
+    }
+    const allEvents = userEvents.completedEvents.map(({ eventId, wellness }) => { return eventId; });
+    return allEvents;
   } catch (error) {
-    throw new Error(`Could not get event: ${error}`);
+    throw new Error(`Could not delete event: ${error}`);
   }
 }
