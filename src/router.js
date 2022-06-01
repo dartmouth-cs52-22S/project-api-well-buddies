@@ -43,9 +43,10 @@ router.get('/buddy/:jwt', async (req, res) => {
   } catch (error) {
     res.status(422).send({ error: error.toString() });
   }
-}).patch('/buddy/:jwt', async (req, res) => {
+}).patch('/buddy', async (req, res) => {
   try {
-    const buddy = await ProfileController.setBuddy(req.params.jwt);
+    console.log('req body', req.body);
+    const buddy = await ProfileController.setBuddy(req.body);
     res.json(buddy);
   } catch (error) {
     res.status(422).send({ error: error.toString() });
