@@ -9,6 +9,7 @@ const profileSchema = new Schema(
     pet: String,
     petName: String,
     star: Number,
+    activity: { lastSuggested: Date, activityName: String }
   },
 
 );

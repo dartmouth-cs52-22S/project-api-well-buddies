@@ -85,7 +85,7 @@ export async function getAllEmotions(jwtToken) {
   const email = jwt.decode(jwtToken, process.env.AUTH_SECRET);
   const foundUser = await Profile.findOne({ email });
 
-  let emotions = await Emotion.find({ user: foundUser });
+  const emotions = await Emotion.find({ user: foundUser });
   let finalDict = {};
   emotions.map((emotion) => {
     // return all users in JSON format
