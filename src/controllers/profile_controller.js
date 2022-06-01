@@ -165,7 +165,8 @@ export async function getTodayActivity(jwtToken) {
     if (foundUser === null) {
       throw new Error('User not found');
     }
-    const activity = await Profile.activity.activityName;
+    const activity = await foundUser.activity.activityName;
+    console.log('activity here', activity);
 
     // no activity input
     if (activity === null) {
@@ -173,6 +174,27 @@ export async function getTodayActivity(jwtToken) {
       return { title: '' };
     }
     return activity;
+  } catch (error) {
+    throw new Error(`Could not get activity: ${error}`);
+  }
+}
+
+export async function getTodayActivities(jwtToken) {
+  try {
+    const email = jwt.decode(jwtToken, process.env.AUTH_SECRET);
+    const foundUser = await Profile.findOne({ email });
+    if (foundUser === null) {
+      throw new Error('User not found');
+    }
+    const activities = await foundUser.activities;
+    console.log('activity here', activity);
+
+    // no activity input
+    if (activities === null) {
+      console.log('today activity not found');
+      return { title: '' };
+    }
+    return activities;
   } catch (error) {
     throw new Error(`Could not get activity: ${error}`);
   }

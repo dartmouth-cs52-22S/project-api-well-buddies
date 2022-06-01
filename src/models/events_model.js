@@ -2,7 +2,7 @@ import mongoose, { Schema } from 'mongoose';
 
 const eventsSchema = new Schema(
   {
-    completedEvents: [{ eventId: String, wellness: Boolean }],
+    completedEvents: [{ eventId: String, wellness: Boolean, summary: String }],
     user: { type: Schema.Types.ObjectId, ref: 'User' },
   },
 

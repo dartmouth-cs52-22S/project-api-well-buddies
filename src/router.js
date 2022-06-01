@@ -134,7 +134,8 @@ router.get('/activity/:jwt', async (req, res) => {
 
 router.get('/activity/today/:jwt', async (req, res) => {
   try {
-    const activity = await ProfileController.getTodayActivity(req.params.jwt);
+    console.log('getting');
+    const activity = await ProfileController.getTodayActivities(req.params.jwt);
     res.json(activity);
   } catch (error) {
     res.status(422).send({ error: error.toString() });
@@ -150,11 +151,12 @@ router.route('/event/:jwt').get(async (req, res) => {
   }
 }).post(async (req, res) => {
   try {
+    console.log('req', req.body);
     let event = '';
     if (req.body.wellness !== '') {
-      event = await EventController.completeEvent(req.params.jwt, req.body.event, true);
+      event = await EventController.completeEvent(req.params.jwt, req.body.eventID, req.body.summary, true);
     } else {
-      event = await EventController.completeEvent(req.params.jwt, req.body.event, false);
+      event = await EventController.completeEvent(req.params.jwt, req.body.eventID, req.body.summary, false);
     }
     res.json(event);
   } catch (error) {

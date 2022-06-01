@@ -2,7 +2,7 @@ import jwt from 'jwt-simple';
 import Event from '../models/events_model';
 import Profile from '../models/profile_model';
 
-export async function completeEvent(jwtToken, newEventId, wellnessValue) {
+export async function completeEvent(jwtToken, newEventId, newSummary, wellnessValue) {
   try {
     const email = jwt.decode(jwtToken, process.env.AUTH_SECRET);
     const foundUser = await Profile.findOne({ email });
@@ -15,9 +15,12 @@ export async function completeEvent(jwtToken, newEventId, wellnessValue) {
       userEvents.user = foundUser;
     }
     console.log(newEventId);
-    userEvents.completedEvents.push({ eventId: newEventId, wellness: wellnessValue });
+    console.log({ eventId: newEventId, summary: newSummary, wellness: wellnessValue });
+    userEvents.completedEvents.push({ eventId: newEventId, summary: newSummary, wellness: wellnessValue });
     const savedEvent = await userEvents.save();
-    const allEvents = savedEvent.completedEvents.map(({ eventId, wellness }) => { return eventId; });
+    console.log('savedevent', savedEvent);
+    const allEvents = savedEvent.completedEvents.map(({ eventId, summary, wellness }) => { return { eventId, summary, wellness }; });
+    console.log('all events', allEvents);
     return allEvents;
   } catch (error) {
     throw new Error(`create event error: ${error}`);

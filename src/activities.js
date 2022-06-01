@@ -145,15 +145,15 @@ async function generateActivity(jwtToken, duration) {
 
     const today = new Date(Date.now());
     console.log(foundUser.activity.lastSuggested);
-    if (foundUser.activity.lastSuggested) {
-      if (foundUser.activity.lastSuggested.toDateString() === today.toDateString()) {
-        throw new Error('Already suggested an activity today!');
-      }
-    } else {
-      foundUser.activity = {};
-      foundUser.activity.lastSuggested = Date.now();
-      foundUser.activity.activityName = '';
-    }
+    // if (foundUser.activity.lastSuggested) {
+    //   if (foundUser.activity.lastSuggested.toDateString() === today.toDateString()) {
+    //     throw new Error('Already suggested an activity today!');
+    //   }
+    // } else {
+    foundUser.activity = {};
+    foundUser.activity.lastSuggested = Date.now();
+    foundUser.activity.activityName = '';
+    // }
 
     let goodActivity = false;
     let activity = null;
@@ -167,6 +167,9 @@ async function generateActivity(jwtToken, duration) {
 
     foundUser.activity.lastSuggested = Date.now();
     foundUser.activity.activityName = activity.title;
+
+    foundUser.activities.push({ lastSuggested: Date.now(), activityName: activity.title });
+
     await foundUser.save();
 
     return activity; // for activity and duration
