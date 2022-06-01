@@ -132,6 +132,17 @@ router.get('/activity/:jwt', async (req, res) => {
   }
 });
 
+router.get('/activity/today/:jwt', async (req, res) => {
+  try {
+    const activity = await ProfileController.completedToday(req.params.jwt);
+    console.log(activity);
+    res.json(activity);
+  } catch (error) {
+    console.log(error);
+    res.status(422).send({ error: error.toString() });
+  }
+});
+
 router.route('/event/:jwt').get(async (req, res) => {
   try {
     const events = await EventController.completedEvents(req.params.jwt);
