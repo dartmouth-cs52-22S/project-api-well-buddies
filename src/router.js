@@ -116,6 +116,15 @@ router.get('/activity/:jwt', async (req, res) => {
   }
 });
 
+router.get('/activity/today/:jwt', async (req, res) => {
+  try {
+    const activity = await ActivityController.getTodayActivity(req.params.jwt);
+    res.json(activity);
+  } catch (error) {
+    res.status(422).send({ error: error.toString() });
+  }
+});
+
 router.get('event/:jwt/:completed', async (req, res) => {
   try {
     const event = await Event.findEvent(req.params.jwt, req.params.completed);

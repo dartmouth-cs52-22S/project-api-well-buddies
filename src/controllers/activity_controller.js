@@ -20,6 +20,28 @@ export async function newActivity(data) {
   }
 }
 
+export async function getTodayActivity(jwtToken) {
+  try {
+    const email = jwt.decode(jwtToken, process.env.AUTH_SECRET);
+    const foundUser = await Profile.findOne({ email });
+    if (foundUser === null) {
+      throw new Error('User not found');
+    }
+    const today = new Date();
+    const activity = await Activity.findOne({ user: foundUser, date: today.toDateString() });
+
+    // no emotion input and no emotion given
+    if (activity === null) {
+      console.log('today activity not found');
+      return { title: '' };
+    }
+    // emotion already exists
+    return activity;
+  } catch (error) {
+    throw new Error(`Could not get emotion: ${error}`);
+  }
+}
+
 export async function getActivities(jwtToken) {
   const email = jwt.decode(jwtToken, process.env.AUTH_SECRET);
   const foundUser = await Profile.findOne({ email });
