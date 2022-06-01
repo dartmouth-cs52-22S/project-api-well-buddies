@@ -2,8 +2,9 @@ import { Router } from 'express';
 import * as ProfileController from './controllers/profile_controller';
 import * as EmotionController from './controllers/emotion_controller';
 // import * as Activity from './activities';
-import * as ActivityController from './controllers/activity_controller'
+import * as ActivityController from './controllers/activity_controller';
 import * as EventController from './controllers/events_controller';
+import generateActivity from './activities';
 
 const router = Router();
 
@@ -107,19 +108,12 @@ router.route('/profile/:jwt').get(async (req, res) => {
 
 router.get('/activity/:jwt', async (req, res) => {
   try {
-    const activities = await ActivityController.getActivities(req.params.jwt);
-    res.json(activities);
-  } catch (error) {
-    res.status(422).send({ error: error.toString() });
-  }
-})/* .patch('/activity/:jwt/:duration', async (req, res) => {
-  try {
-    const activity = await Activity.generateActivity(req.params.duration);
+    const activity = await generateActivity(req.params.jwt, req.query.duration);
     res.json(activity);
   } catch (error) {
     res.status(422).send({ error: error.toString() });
   }
-}) */;
+});
 
 router.get('event/:jwt/:completed', async (req, res) => {
   try {
