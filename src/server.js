@@ -45,7 +45,6 @@ async function startServer() {
   try {
     // connect DB
     const mongoURI = process.env.MONGODB_URI; /* || 'mongodb://localhost/api'; */
-    console.log(mongoURI);
     await mongoose.connect(mongoURI);
     console.log(`Mongoose connected to: ${mongoURI}`);
 

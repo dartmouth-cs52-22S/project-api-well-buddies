@@ -45,7 +45,6 @@ router.get('/buddy/:jwt', async (req, res) => {
   }
 }).patch('/buddy', async (req, res) => {
   try {
-    console.log('req body', req.body);
     const buddy = await ProfileController.setBuddy(req.body);
     res.json(buddy);
   } catch (error) {
@@ -56,7 +55,6 @@ router.get('/buddy/:jwt', async (req, res) => {
 // get all emotions
 router.route('/emotions/:jwt').get(async (req, res) => {
   try {
-    console.log('got here');
     const emotions = await EmotionController.getAllEmotions(req.params.jwt);
     res.json(emotions);
   } catch (error) {
@@ -68,7 +66,6 @@ router.route('/emotions/:jwt').get(async (req, res) => {
 router.route('/emotion/:jwt').get(async (req, res) => {
   try {
     const emotions = await EmotionController.getTodayEmotion(req.params.jwt);
-    console.log('got here');
     res.json(emotions);
   } catch (error) {
     console.log(`get emotion error ${error}`);
@@ -135,7 +132,7 @@ router.get('/activity/:jwt', async (req, res) => {
 router.get('/activity/today/:jwt', async (req, res) => {
   try {
     const activity = await ProfileController.completedToday(req.params.jwt);
-    console.log(activity);
+
     res.json(activity);
   } catch (error) {
     console.log(error);
